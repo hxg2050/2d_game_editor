@@ -1,17 +1,26 @@
-/**
- * This file is used specifically for security reasons.
- * Here you can access Nodejs stuff and inject functionality into
- * the renderer thread (accessible there through the "window" object)
- *
- * WARNING!
- * If you import anything from node_modules, then make sure that the package is specified
- * in package.json > dependencies and NOT in devDependencies
- *
- * Example (injects window.myAPI.doAThing() into renderer thread):
- *
- *   import { contextBridge } from 'electron'
- *
- *   contextBridge.exposeInMainWorld('myAPI', {
- *     doAThing: () => {}
- *   })
- */
+import { contextBridge } from 'electron';
+import { BrowserWindow } from '@electron/remote';
+import WinStatusType from './WinStatusTpye';
+
+contextBridge.exposeInMainWorld('eapi', {
+  minimize() {
+    BrowserWindow.getFocusedWindow().minimize();
+    return WinStatusType.MIN;
+  },
+
+  toggleMaximize() {
+    const win = BrowserWindow.getFocusedWindow()!;
+
+    if (win.isMaximized()) {
+      win.unmaximize();
+      return WinStatusType.UN_MAX;
+    } else {
+      win.maximize();
+      return WinStatusType.MAX;
+    }
+  },
+
+  close() {
+    BrowserWindow.getFocusedWindow().close();
+  }
+});

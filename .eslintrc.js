@@ -64,12 +64,14 @@ module.exports = {
     __QUASAR_SSR_PWA__: 'readonly',
     process: 'readonly',
     Capacitor: 'readonly',
-    chrome: 'readonly'
+    chrome: 'readonly',
+    eapi: 'readonly'
   },
 
   // add your custom rules here
   rules: {
-    
+    // 'indent': ['error', 4],
+
     'prefer-promise-reject-errors': 'off',
 
     quotes: ['warn', 'single', { avoidEscape: true }],
